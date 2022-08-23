@@ -39,21 +39,6 @@ resource "cloudflare_record" "txt_confirm"{
     ttl = 3600
 }
 
-
-# Add a free SSL cert (this may be a bit buggy?)
-# Note: This may actually depend on our bucket existing (??)
-resource "cloudflare_zone_settings_override" "ssl_tls_overview" {
-    zone_id = var.cloudflare_zone_id
-    settings{
-        ssl = var.ssl_override
-    }
-    depends_on = [
-      cloudflare_page_rule.www_to_root,
-      cloudflare_page_rule.root,
-      cloudflare_page_rule.txt_confirm
-    ]
-}
-
 # Redirect www subdomain traffic to root domain
 resource "cloudflare_page_rule" "www_to_root" {
     zone_id = var.cloudflare_zone_id
@@ -64,4 +49,18 @@ resource "cloudflare_page_rule" "www_to_root" {
             url = "https://${var.root_domain}/$1"
         }
     }
+}
+
+# Add a free SSL cert (this may be a bit buggy?)
+# Note: This may actually depend on our bucket existing (??)
+resource "cloudflare_zone_settings_override" "ssl_tls_overview" {
+    zone_id = var.cloudflare_zone_id
+    settings{
+        ssl = var.ssl_override
+    }
+    depends_on = [
+      cloudflare_page_rule.www_to_root,
+      cloudflare_record.root,
+      cloudflare_record.txt_confirm
+    ]
 }
