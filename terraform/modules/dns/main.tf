@@ -64,7 +64,4 @@ resource "cloudflare_page_rule" "www_to_root" {
             url = "https://${var.root_domain}/$1"
         }
     }
-    depends_on = [
-      cloudflare_zone_settings_override.ssl_tls_overview
-    ]
 }

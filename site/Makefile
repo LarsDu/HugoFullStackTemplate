@@ -5,7 +5,7 @@ DEPLOYMENT_TARGET=deployment_target
 
 # Makes sure vars are read properly from config.toml and ../terraform/prod/terraform.tfvars
 echo_vars:
-	echo ' = $(GCP_KEY_FILENAME)'
+	@ echo "Key file located at "$(GCP_KEY_FILENAME)'
 
 build:
 	hugo --gc --minify

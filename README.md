@@ -22,12 +22,14 @@ Deploying a site requires the following steps:
 2. Get a CloudFlare account and get a `api_token`
 3. Register a domain with Cloudflare
 4. *IMPORTANT* Create and fill out `terraform/prod/terraform.tfvars`.
-5. `cd terraform/prod; make apply`
+5. `cd terraform/prod; terraform init; make apply`
     - Errors will occur due to lack of domain registration confirmation. Go ahead and confirm domain registration following any prompts that appear.
 6. Edit `site/config.toml` deployment targets to point at your bucket/root domain (ie: `gs://mysite.net`).
 7. Add `PROVIDER_NAME` (workload_provider_name in your `*tfstate`) `SA_EMAIL` (storage_service_account_email in `*tfstate`) to `Github Actions Secrets` in Github.
-8. Push to Github `$ git push origin main`!
-    - *Optional*: Consider adding a theme to your Hugo site before pushing
+8. Enable Github Actions for your Repo in your Repo settings.
+9. Push to Github with `$ git push origin main`
+    - *Optional*: Consider adding a theme to your Hugo site before pushing.
+10. Verify Github Actions is working and check your domain name for your new website! 
 
 ### Explanation
 
