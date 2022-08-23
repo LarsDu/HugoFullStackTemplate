@@ -35,7 +35,6 @@ Deploying a site requires the following steps:
 
 The Terraform step (4) above should setup a Cloudflare DNS, DNS records for your site, Forwarding rules for HTTPS, SSL records, Caching and CDN via Cloudflare, Google Cloud Storage bucket for your site, a service account + workload identity pool to let Github Actions work on your bucket!
 
-
 #### TODOs:
  - Move state management from `terraform.tfvars` to  GCloud
  - Use terragrunt to key things DRY
