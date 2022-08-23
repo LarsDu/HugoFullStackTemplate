@@ -1,0 +1,21 @@
+# HugoFullStack TFVARS example
+
+## Shared Vars
+project_id = "mysite-123"
+region = "us-west-1b"
+gcp_key_file = "~/gcp/access_key.json"
+root_domain = "mysite.net"
+prefix = "mysite"
+
+## Github Open ID Connect vars
+oidc_provider_id = "github"
+oidc_issuer_uri = "https://token.actions.githubusercontent.com"
+
+## Cloudflare DNS settings
+cloudflare_api_key = "1b1b1b1b1b1b1b1b1b11"
+# Look in the Overview Section of your website in cloudflare for this info
+cloudflare_zone_id = "22b2b2b2b22b2b2b2b2b2b"
+cloudflare_email = "admin@mysite.com"
+confirm_dns_txt = "google-site-verification=123abcadadadadad"
+static_site_storage_domain = "c.storage.googleapis.com"
+ssl_override = "full"

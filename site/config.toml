@@ -1,0 +1,7 @@
+baseURL = 'https://mysite.net/'
+languageCode = 'en-us'
+title = 'My New Hugo Site'
+
+[[deployment.targets]]
+name = deployment_target
+URL = 'gs://mysite.net'

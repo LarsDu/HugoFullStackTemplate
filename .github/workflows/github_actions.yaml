@@ -1,0 +1,54 @@
+# CI/CD for a blog hosted on a Google Cloud Storage Bucket
+# ref: https://swharden.com/blog/2022-03-20-github-actions-hugo/
+# ref: https://github.com/marketplace/actions/authenticate-to-google-cloud
+# ref: https://docs.github.com/en/actions/security-guides/encrypted-secrets
+name: Static Hugo Site CI/CD
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build_deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+  
+      - name: 'Authenticate to Google Cloud'
+        id: 'auth'
+        uses: 'google-github-actions/auth@v0.7.3'
+        with:
+          # Note: workload_identity_provider looks something like
+          #   projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+          #   Look under "Default Audience" in the UI if setting this up there
+          # Note: You must make sure to "Grant Access"/Connect Service account to your workload_identity_pool 
+          workload_identity_provider: ${{ secrets.PROVIDER_NAME }} 
+          service_account: ${{ secrets.SA_EMAIL }}
+
+      #- name: Setup Node
+        # Needed for certain sites
+      #  uses: actions/setup-node@v3
+      #  with:
+      #    node-version: '14'
+
+      - name: Setup Hugo
+        env:
+          HUGO_DOWNLOAD_URI: https://github.com/gohugoio/hugo/releases/download
+          HUGO_VERSION: 0.101.0
+          HUGO_FILE: hugo_extended_${HUGO_VERSION}_Linux-64bit.deb
+        run: |
+          curl -L ${HUGO_DOWNLOAD_URI}/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.deb --output ${HUGO_FILE}
+          sudo dpkg -i ${HUGO_FILE}
+
+      - name: Deploy
+        run: |
+          cd site
+          make deploy
