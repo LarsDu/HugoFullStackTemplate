@@ -15,6 +15,7 @@ resource "cloudflare_record" "www" {
     #domain   = var.root_domain
     name    = "www"
     value = var.static_site_storage_domain
+    allow_overwrite = true
     type    = "CNAME"
     ttl     = 1
     proxied = true
@@ -23,7 +24,7 @@ resource "cloudflare_record" "www" {
 # Create a CNAME record
 resource "cloudflare_record" "root" {
     zone_id = var.cloudflare_zone_id
-    #domain = var.root_domain
+    allow_overwrite = true
     name    = "@"
     value   = var.static_site_storage_domain
     type    = "CNAME"
@@ -32,7 +33,7 @@ resource "cloudflare_record" "root" {
 }
 resource "cloudflare_record" "txt_confirm"{
     zone_id = var.cloudflare_zone_id
-    #domain = var.root_domain
+    allow_overwrite = true
     name = var.root_domain
     value = var.confirm_dns_txt
     type = "TXT"
